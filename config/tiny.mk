@@ -1,5 +1,8 @@
 PRODUCT_BRAND ?= cyanogenmod
 
+SUPERUSER_EMBEDDED := true
+SUPERUSER_PACKAGE_PREFIX := com.android.settings.cyanogenmod.superuser
+
 # To deal with CM9 specifications
 # TODO: remove once all devices have been switched
 ifneq ($(TARGET_BOOTANIMATION_NAME),)
@@ -66,6 +69,11 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.com.android.dateformat=MM-dd-yyyy \
     ro.com.android.dataroaming=false
 
+#ifneq ($(TARGET_BUILD_VARIANT),eng)
+## Enable ADB authentication
+#ADDITIONAL_DEFAULT_PROPERTIES += ro.adb.secure=1
+#endif
+
 # Copy over the changelog to the device
 PRODUCT_COPY_FILES += \
     vendor/cm/CHANGELOG.mkdn:system/etc/CHANGELOG-CM.txt
@@ -113,6 +121,9 @@ PRODUCT_COPY_FILES += \
 
 # T-Mobile theme engine
 include vendor/cm/config/themes_common.mk
+
+include frameworks/base/data/sounds/OldAudio.mk
+
 # Required CM packages
 PRODUCT_PACKAGES += \
     Development \
@@ -134,7 +145,9 @@ PRODUCT_PACKAGES += \
     libcyanogen-dsp \
     audio_effects.conf \
     Apollo \
-    CMFileManager
+    CMFileManager \
+    HwaSettings \
+    PermissionsManager
 
 # Extra tools in CM
 PRODUCT_PACKAGES += \
@@ -150,7 +163,7 @@ PRODUCT_PACKAGE_OVERLAYS += vendor/cm/overlay/common
 
 PRODUCT_VERSION_MAJOR = 10
 PRODUCT_VERSION_MINOR = 1
-PRODUCT_VERSION_MAINTENANCE = 0-RC0
+PRODUCT_VERSION_MAINTENANCE = 0-RC5
 
 # Set CM_BUILDTYPE
 ifdef CM_NIGHTLY
@@ -190,13 +203,5 @@ PRODUCT_PROPERTY_OVERRIDES += \
   ro.cm.version=$(CM_VERSION) \
   ro.modversion=$(CM_VERSION)
 
-include frameworks/base/data/sounds/OldAudio.mk
-
-# BT config
-PRODUCT_COPY_FILES += \
-    system/bluetooth/data/main.conf:system/etc/bluetooth/main.conf
-
-# T-Mobile theme engine
-include vendor/cm/config/themes_common.mk
 
 -include $(WORKSPACE)/hudson/image-auto-bits.mk
