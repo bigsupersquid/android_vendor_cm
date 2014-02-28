@@ -29,7 +29,11 @@ $(eval TARGET_BOOTANIMATION_NAME := $(shell \
 endef
 $(foreach size,$(bootanimation_sizes), $(call check_and_set_bootanimation,$(size)))
 
+ifeq ($(TARGET_BOOTANIMATION_HALF_RES),true)
+PRODUCT_BOOTANIMATION := vendor/cm/prebuilt/common/bootanimation/halfres/$(TARGET_BOOTANIMATION_NAME).zip
+else
 PRODUCT_BOOTANIMATION := vendor/cm/prebuilt/common/bootanimation/$(TARGET_BOOTANIMATION_NAME).zip
+endif
 endif
 
 ifdef CM_NIGHTLY
@@ -130,10 +134,9 @@ PRODUCT_PACKAGES += \
     libemoji
 
 # Custom CM packages
-    #Trebuchet \
-
 PRODUCT_PACKAGES += \
     Launcher3 \
+    Trebuchet \
     DSPManager \
     libcyanogen-dsp \
     audio_effects.conf \
@@ -152,6 +155,7 @@ PRODUCT_PACKAGES += \
 
 # Extra tools in CM
 PRODUCT_PACKAGES += \
+    libsepol \
     openvpn \
     e2fsck \
     mke2fs \
@@ -212,7 +216,6 @@ endif
 # easy way to extend to add more packages
 -include vendor/extra/product.mk
 
-#PRODUCT_PACKAGE_OVERLAYS += vendor/cm/overlay/dictionaries
 PRODUCT_PACKAGE_OVERLAYS += vendor/cm/overlay/common
 
 PRODUCT_VERSION_MAJOR = 11
