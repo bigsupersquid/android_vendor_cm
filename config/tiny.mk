@@ -261,7 +261,7 @@ ifdef CM_BUILDTYPE
 else
     # If CM_BUILDTYPE is not defined, set to UNOFFICIAL
     CM_BUILDTYPE := UNOFFICIAL
-    CM_EXTRAVERSION :=
+    CM_EXTRAVERSION := bigsuperROM-thunderc
 endif
 
 ifeq ($(CM_BUILDTYPE), UNOFFICIAL)
